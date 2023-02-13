@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Api_Jwt_UploudImages.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Api_Jwt_UploudImages.Data
 {
@@ -9,8 +10,8 @@ namespace Api_Jwt_UploudImages.Data
             {
 
             }
+        public DbSet<Category> Categories { get; set; }
 
-
-        }
+    }
     }
 
