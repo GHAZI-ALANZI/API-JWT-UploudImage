@@ -1,6 +1,8 @@
 ﻿using Api_Jwt_UploudImages.Data;
 using Api_Jwt_UploudImages.Data.Models;
+using Azure;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -43,6 +45,19 @@ namespace Api_Jwt_UploudImages.Controllers
             }
             c.Name = category.Name;
             _db.SaveChanges();
+            return Ok(c);
+        }
+        [HttpPatch("{id}")]
+        public async Task<IActionResult>
+           UpdateCategoryPatch([FromBody] JsonPatchDocument<Category> category, [FromRoute] int id)
+        {
+            var c = await _db.Categories.SingleOrDefaultAsync(x => x.Id == id);
+            if (c == null)
+            {
+                return NotFound($"Category Id {id} not exists ");
+            }
+            category.ApplyTo(c);
+            await _db.SaveChangesAsync();
             return Ok(c);
         }
         [HttpDelete("{id}")]
