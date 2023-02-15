@@ -10,5 +10,6 @@ namespace Api_Jwt_UploudImages.Data.Models
         [MaxLength(50)]
         public string Name { get; set; }
         public string? notes { get; set; }
+        public List<Item> Items { get; set; }
     }
 }
