@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Api_Jwt_UploudImages.Data.Models
 {
@@ -20,9 +22,12 @@ namespace Api_Jwt_UploudImages.Data.Models
         [ForeignKey(nameof(category))]
         public int CategoryId { get; set; }
 
-        public Category category { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public virtual Category category { get; set; }
         public bool isActive { get; set; }
-
+        [JsonIgnore]
+        [IgnoreDataMember]
         public virtual ICollection<OrderItem> ordersItems { get; set; }
     }
 }
