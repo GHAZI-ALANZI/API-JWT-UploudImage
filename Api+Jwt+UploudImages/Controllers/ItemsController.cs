@@ -35,7 +35,7 @@ namespace Api_Jwt_UploudImages.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddItem(mdlItem mdl)
+        public async Task<IActionResult> AddItem([FromForm] mdlItem mdl)
         {
             using var stream = new MemoryStream();
             await mdl.Image.CopyToAsync(stream);
