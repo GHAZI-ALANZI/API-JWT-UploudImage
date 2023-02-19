@@ -62,9 +62,30 @@ namespace Api_Jwt_UploudImages.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddOrder(Order order)
+        public async Task<IActionResult> AddOrder([FromBody] dtoOrders order)
         {
-            return Ok(order);
+            if (ModelState.IsValid)
+            {
+                Order mdl = new()
+                {
+                    CreatedDate = order.OrderDate,
+                    ordersItems = new List<OrderItem>()
+                };
+                foreach (var item in order.items)
+                {
+                    OrderItem orderItem = new()
+                    {
+                        ItemId = item.itemId,
+                        Price = item.price,
+                    };
+                    mdl.ordersItems.Add(orderItem);
+                }
+                await _db.Orders.AddAsync(mdl);
+                await _db.SaveChangesAsync();
+                order.orderId = mdl.id;
+                return Ok(order);
+            }
+            return BadRequest();
         }
     }
 }
