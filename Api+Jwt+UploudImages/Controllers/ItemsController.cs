@@ -62,7 +62,33 @@ namespace Api_Jwt_UploudImages.Controllers
             await _db.SaveChangesAsync();
             return Ok(item);
         }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateItem(int id, [FromForm] mdlItem mdl)
+        {
+            var item = await _db.Items.FindAsync(id);
+            if (item == null)
+            {
+                return NotFound($"  item id {id} not exists !");
+            }
+            var isCategoryExists = await _db.Categories.AnyAsync(x => x.Id == mdl.CategoryId);
+            if (isCategoryExists)
+            {
+                return NotFound($"  Category id {id} not exists !");
+            }
+            if (mdl.Image != null)
+            {
+                using var stream = new MemoryStream();
+                await mdl.Image.CopyToAsync(stream);
+                item.Image = stream.ToArray();
+            }
+            item.Name = mdl.Name;
+            item.Price = mdl.Price;
+            item.Notes = mdl.Notes;
+            item.CategoryId = mdl.CategoryId;
 
+            _db.SaveChanges();
+            return Ok(item);
+        }
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteItem(int id)
         {
