@@ -21,5 +21,8 @@ namespace Api_Jwt_UploudImages.Data.Models
         public int CategoryId { get; set; }
 
         public Category category { get; set; }
+        public bool isActive { get; set; }
+
+        public virtual ICollection<OrderItem> ordersItems { get; set; }
     }
 }
