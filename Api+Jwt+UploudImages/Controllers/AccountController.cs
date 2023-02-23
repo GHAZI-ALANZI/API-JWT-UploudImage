@@ -1,4 +1,5 @@
 ﻿using Api_Jwt_UploudImages.Data.Models;
+using Api_Jwt_UploudImages.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,7 @@ namespace Api_Jwt_UploudImages.Controllers
 
         private readonly UserManager<AppUser> _userManager;
 
-        [HttpPost]
+        [HttpPost("Register")]
         public async Task<IActionResult> RegisterNewUser(dtoNewUser user)
         {
             if (ModelState.IsValid)
@@ -41,6 +42,30 @@ namespace Api_Jwt_UploudImages.Controllers
             }
             return BadRequest(ModelState);
         }
+        [HttpPost]
+        public async Task<IActionResult> LogIn(dtoLogin login)
+        {
+            if (ModelState.IsValid)
+            {
+                AppUser? user = await _userManager.FindByNameAsync(login.userName);
+                if (user != null)
+                {
+                    if (await _userManager.CheckPasswordAsync(user, login.password))
+                    {
+                        return Ok("Token");
+                    }
+                    else
+                    {
+                        return Unauthorized();
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "User Name is invalid");
+                }
+            }
+            return BadRequest(ModelState);
+        }
     }
 }
-}
+
