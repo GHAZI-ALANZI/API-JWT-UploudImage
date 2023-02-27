@@ -77,7 +77,13 @@ namespace Api_Jwt_UploudImages.Controllers
                             audience: configuration["JWT:Audience"],
                             expires: DateTime.Now.AddHours(1),
                             signingCredentials: sc
-                            );
+                            ); 
+                        var _token = new
+                        {
+                            token = new JwtSecurityTokenHandler().WriteToken(token),
+                            expiration = token.ValidTo,
+                        };
+                        return Ok(_token);
                     }
                     else
                     {

@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Api_Jwt_UploudImages.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Api_Jwt_UploudImages.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class OrdersController : ControllerBase
     {
         public OrdersController(AppDbContext db)
